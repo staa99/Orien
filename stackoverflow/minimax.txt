@@ -1,0 +1,27 @@
+I have read a lot of posts on minimax, read many answers on stack overflow but I can't seem to wrap my head around something. I have the following problem, I've attempted to use the minimax algorithm to solve it by hand and I have the following which is not right.
+
+p1 vs p2
+current player: p1
+3 playing options (01, 10, 11)
+paths
+01 -> 10 -> 11 | p1 wins (p2 negates to avoid loss)
+01 -> 11 -> 10 | draw
+10 -> 01       | p2 wins (p1 negates to avoid loss)
+10 -> 11 -> 01 | draw
+11 -> 01       | p2 wins (p1 negates to avoid loss)
+11 -> 10 -> 01 | p1 wins (p2 negates to avoid loss)
+
+this is ok
+01 summarises as draw (because p2 will not let p1 win by playing 10)
+
+the problem is with the remaining 2
+10 summarises as draw (should be loss)
+11 summarises as loss (should be loss, but the reason why it is a loss is because the 11->10 path will not be taken by the other, it negates it)
+
+// the cause for the summary
+What I do is check the depth to determine whether to negate or not. If the depth is odd, I will negate.
+
+there should be a way to distinguish between p1 negating and p2 negating.
+The 01->10->11 path cannot win, other will prevent win by taking 01->11->10: Good decision.
+The 10->01 must not be taken, leads to loss.
+The 10->11->01 path cannot be expected, because the other wins with 10->01. So 10 must count as loss.

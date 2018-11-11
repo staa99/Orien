@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.staa.games.orien.engine.game.ConstantsKt"/>
+
+        <variable
+            name="tokenType"
+            type="Integer"/>
+    </data>
+
+    <ImageView
+        android:layout_width='60dp'
+        android:layout_height='60dp'
+        android:contentDescription="Token"
+        android:src='@{safeUnbox(tokenType) == ConstantsKt.ver ? @drawable/ver_token : safeUnbox(tokenType) == ConstantsKt.hor ? @drawable/hor_token : safeUnbox(tokenType) == ConstantsKt.lft ? @drawable/lft_token : @drawable/rgt_token,  default=@drawable/ver_token}'
+        android:tint='@{safeUnbox(tokenType) == ConstantsKt.ver ? @color/verColor : safeUnbox(tokenType) == ConstantsKt.hor ? @color/horColor : safeUnbox(tokenType) == ConstantsKt.lft ? @color/lftColor : @color/rgtColor,  default=@color/verColor}'/>
+</layout>

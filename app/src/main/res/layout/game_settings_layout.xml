@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    tools:context=".activities.GameSettingsActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <TextView
+            android:id="@+id/rowCountLabel"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:labelFor="@id/rowCountEditText"
+            android:text="@string/row_count_label_text"/>
+
+        <EditText
+            android:id="@+id/rowCountEditText"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rowCountLabel"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:inputType="number"
+            android:minHeight="@dimen/large_text"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:text="@string/default_row_count"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textIsSelectable="false"/>
+
+
+        <TextView
+            android:id="@+id/straightWinSizeLabel"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rowCountEditText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp"
+            android:gravity="center"
+            android:labelFor="@id/straightWinSizeEditText"
+            android:text="@string/straight_win_size_label_text"/>
+
+        <EditText
+            android:id="@+id/straightWinSizeEditText"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/straightWinSizeLabel"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:inputType="number"
+            android:minHeight="@dimen/large_text"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:text="@string/default_straight_win_size"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textIsSelectable="false"/>
+
+
+        <TextView
+            android:id="@+id/slantWinSizeLabel"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/straightWinSizeEditText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp"
+            android:gravity="center"
+            android:labelFor="@id/slantWinSizeEditText"
+            android:text="@string/slant_win_size_label_text"/>
+
+        <EditText
+            android:id="@+id/slantWinSizeEditText"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/slantWinSizeLabel"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:inputType="number"
+            android:minHeight="@dimen/large_text"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:text="@string/default_slant_win_size"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textIsSelectable="false"/>
+
+
+        <android.support.v7.widget.ButtonBarLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/slantWinSizeEditText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/playButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/btn_bg"
+                android:onClick="playClick"
+                android:text="@string/play_button_text"/>
+
+
+            <Button
+                android:id="@+id/homeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/btn_bg"
+                android:onClick="homeClick"
+                android:text="@string/home_button_text"/>
+
+        </android.support.v7.widget.ButtonBarLayout>
+
+
+    </RelativeLayout>
+</ScrollView>
