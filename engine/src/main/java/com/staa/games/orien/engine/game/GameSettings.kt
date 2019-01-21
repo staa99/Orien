@@ -6,7 +6,5 @@ data class GameSettings
 (
         // since it is square, the row count = column count
         val rowCount: Int,
-        val straightWinSize: Int,
-        val slantWinSize: Int,
-        val noOfPlayers: Int
+        val winSize: Int
 ) : Serializable

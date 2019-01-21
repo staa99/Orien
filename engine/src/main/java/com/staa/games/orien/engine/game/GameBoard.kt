@@ -180,40 +180,6 @@ class GameBoard(private val m: Int, private val n: Int) : Serializable, Cloneabl
         }
     }
 
-    fun getTokenPointScore(token: Int, point: Point, winRowCount: Int): Int
-    {
-        fun filter(it: Point) = when (token)
-        {
-            hor  -> it.first == point.first &&
-                    abs(it.second - point.second) == 1
-
-            ver  -> it.second == point.second &&
-                    abs(it.first - point.first) == 1
-            rgt  -> it.first + it.second == point.first + point.second &&
-                    abs(it.first - point.first) == abs(it.second - point.second) &&
-                    abs(it.first - point.first) == 1
-            lft  -> abs((it.first + it.second) - (point.first + point.second)) == 2 &&
-                    abs(it.first - point.first) == abs(it.second - point.second) &&
-                    abs(it.first - point.first) == 1
-            else -> throw UnsupportedOperationException("Invalid token")
-        }
-
-
-        //        this[point] = token
-        val groups =
-                tokens[token]!!.filter { it ->
-                    it.any {
-                        filter(it)
-                    }
-                }
-
-        return if (groups.sumBy { it.size } + 1 >= winRowCount)
-        {
-            Int.MAX_VALUE
-        }
-        else groups.size * (groups.maxBy { it.size }?.size ?: 0)
-    }
-
 
     override fun toString(): String
     {

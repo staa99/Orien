@@ -41,6 +41,8 @@
         </activity>
         <activity android:name=".activities.LocalGroupActivity">
         </activity>
+        <activity android:name=".activities.AiGroupActivity">
+        </activity>
     </application>
 
 </manifest>

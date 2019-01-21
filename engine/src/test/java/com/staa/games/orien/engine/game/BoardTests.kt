@@ -1,6 +1,7 @@
 package com.staa.games.orien.engine.game
 
-import com.staa.games.orien.engine.ai.calculateBestMove
+import com.staa.games.orien.engine.game.players.AI
+import com.staa.games.orien.engine.game.players.AIDifficulty
 import com.staa.games.orien.engine.game.players.Player
 import org.junit.Assert
 import org.junit.Test
@@ -8,82 +9,113 @@ import org.junit.Test
 class BoardTests
 {
     @Test
-    fun testGameplay()
+    fun testGamePlay()
     {
         val settings = GameSettings(
-                rowCount = 3,
-                straightWinSize = 3,
-                slantWinSize = 3,
-                noOfPlayers = 2)
+                rowCount = 5,
+                winSize = 3)
 
-        val players = arrayOf(
-                Player("john", ver),
-                Player("pete", hor))
+        val john = AI("john", ver, AIDifficulty.Beginner)
+        val pete = AI("pete", hor, AIDifficulty.Professional)
+        val players = arrayOf(john as Player, pete)
 
-        val game = Game(settings, players)
+        // simulate 100 games, assert that the number of wins of the pro is greater than that of a beginner
+        var drawCount = 0
+        var proWinCount = 0
+        var beginnerWinCount = 0
 
-
-        while (game.state != GameState.finished_win && game.state != GameState.finished_draw)
+        for (i in 1..1)
         {
-            val ind = game.currentPlayerIndex
-            val outcomes = hashMapOf<Point, Point>()
-            val move = calculateBestMove(game, 0, outcomes)
-            assert(ind == game.currentPlayerIndex)
-            println()
-            println()
-            println("$move: ${players[ind].name}")
-            println(outcomes.filter { it.value.first != 0 }.map {
-                "\t${Pair(it.key, it.value.first)}"
-            }.joinToString(separator = "\n",
-                           prefix = "outcomes: \n"))
-            println()
-            game.move(move)
+            println("Game $i started")
+
+            val game = Game(settings, players)
+            john.game = game
+            pete.game = game
+
+            while (game.state == GameState.Running)
+            {
+                // start the game
+                game.getCurrentPlayer().switchTo()
+            }
+
             println(game.board)
+            when (game.state)
+            {
+                GameState.FinishedDraw ->
+                {
+                    drawCount++
+                    println("The game ended as a draw")
+                }
+
+                GameState.FinishedWin  ->
+                {
+                    when (game.winnerIndex)
+                    {
+                        0 ->
+                        {
+                            println("Beginner wins")
+                            beginnerWinCount++
+                        }
+
+                        1 ->
+                        {
+                            println("Professional wins")
+                            proWinCount++
+                        }
+                    }
+                }
+            }
         }
 
-        Assert.assertEquals(GameState.finished_win, game.state)
+        Assert.assertTrue("pro wins: $proWinCount\nbeginner wins: $beginnerWinCount\ndraws: $drawCount",
+                          beginnerWinCount < proWinCount)
     }
 
     @Test
     fun playCli()
     {
         val settings = GameSettings(
-                rowCount = 2,
-                straightWinSize = 2,
-                slantWinSize = 3,
-                noOfPlayers = 2)
+                rowCount = 5,
+                winSize = 3)
 
+        val pete = AI("pete", hor, AIDifficulty.Professional)
         val players = arrayOf(
-                Player("pete", hor),
+                pete,
                 Player("staa", ver))
 
         val game = Game(settings, players)
+        pete.game = game
 
         println(game.board)
-        while (game.state != GameState.finished_win && game.state != GameState.finished_draw)
+        while (game.state != GameState.FinishedWin && game.state != GameState.FinishedDraw)
         {
             println()
-            println("${game.getCurrentPlayer().name}'s turn: ")
-            val move: Point = calculateBestMove(game, 0, hashMapOf())
 
-            /*if (game.getCurrentPlayer() is )
+            val currentPlayer = game.getCurrentPlayer()
+            println("${currentPlayer.name}'s turn: ")
+
+            currentPlayer.switchTo()
+
+            if (currentPlayer !is AI)
             {
-                calculateBestMove(game, 0, hashMapOf())
+                val move = Point(-1, -1)
+                println(game.board)
+
+                /**
+                 * Play by modifying in debug mode
+                 */
+                if (move == Point(-1, -1))
+                {
+                    throw UnsupportedOperationException("Human player skipping")
+                }
+                game.move(move)
             }
-            else
-            {
-                /*val line = ""
-                val split = line.split(',')
-                Point(split[0].toInt(),split[1].toInt())*/
-                calculateBestMove(game, 0, hashMapOf())
-            }*/
 
-            game.move(move)
             println(game.board)
             println()
         }
 
-        Assert.assertEquals(GameState.finished_draw, game.state)
+        Assert.assertEquals(GameState.FinishedDraw, game.state)
         //println("${game.players[game.winnerIndex].name} wins")
     }
 }

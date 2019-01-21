@@ -2,4 +2,5 @@
 <resources>
     <dimen name="large_text">40sp</dimen>
     <dimen name="normal_text">33sp</dimen>
+    <dimen name="image_button">60dp</dimen>
 </resources>

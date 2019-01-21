@@ -9,6 +9,26 @@
     android:focusableInTouchMode="true"
     tools:context=".activities.MainActivity">
 
+    <android.support.v7.widget.ButtonBarLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:layout_width="@dimen/image_button"
+            android:layout_height="@dimen/image_button"
+            android:contentDescription="@string/game_options_text"
+            android:onClick="onSettingsClick"
+            android:src="@drawable/design_ic_visibility_off"/>
+
+        <ImageView
+            android:layout_width="@dimen/image_button"
+            android:layout_height="@dimen/image_button"
+            android:contentDescription="@string/profile_settings_text"
+            android:onClick="onSettingsClick"
+            android:src="@drawable/design_ic_visibility"/>
+    </android.support.v7.widget.ButtonBarLayout>
 
     <TextView
         android:id="@+id/appNameView"
@@ -27,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/appNameView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="60dp"
         android:onClick="localMultiplayerClick"
         android:text="@string/local_multiplayer_link"
         android:textColor="@color/textLink"/>
@@ -39,9 +59,21 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/localMultiplayer"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="60dp"
         android:onClick="lanMultiplayerClick"
         android:text="@string/lan_multiplayer_link"
+        android:textColor="@color/textLink"
+        />
+
+    <TextView
+        android:id="@+id/aiPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wifiMultiplayer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:onClick="aiPlayClick"
+        android:text="@string/ai_play_link"
         android:textColor="@color/textLink"
         />
 
@@ -50,9 +82,9 @@
         android:id="@+id/howToPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/wifiMultiplayer"
+        android:layout_below="@id/aiPlay"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="60dp"
         android:text="@string/game_instructions_link_text"
         android:textColor="@color/textLink"
         />

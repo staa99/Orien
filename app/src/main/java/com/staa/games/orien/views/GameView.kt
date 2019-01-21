@@ -109,6 +109,7 @@ class GameView(context: Context) : FrameLayout(context)
                                                    0f)
                         canvas.drawPath(path, verPaint)
                     }
+
                     hor ->
                     {
                         val path = drawRoundedRect(tokenRectStartX,
@@ -120,6 +121,7 @@ class GameView(context: Context) : FrameLayout(context)
                                                    90f)
                         canvas.drawPath(path, horPaint)
                     }
+
                     rgt ->
                     {
                         val path = drawRoundedRect(tokenRectStartX,
@@ -131,6 +133,7 @@ class GameView(context: Context) : FrameLayout(context)
                                                    45f)
                         canvas.drawPath(path, rgtPaint)
                     }
+
                     lft ->
                     {
                         val path = drawRoundedRect(tokenRectStartX,
@@ -215,7 +218,7 @@ class GameView(context: Context) : FrameLayout(context)
                 game.move(Point(r, c))
                 invalidate()
 
-                if (game.state == GameState.finished_draw || game.state == GameState.finished_win)
+                if (game.state == GameState.FinishedDraw || game.state == GameState.FinishedWin)
                 {
                     fun dismiss()
                     {
@@ -229,7 +232,7 @@ class GameView(context: Context) : FrameLayout(context)
                             { _, _ ->
                                 dismiss()
                             }
-                            .setMessage(if (game.state == GameState.finished_win)
+                            .setMessage(if (game.state == GameState.FinishedWin)
                                         {
                                             val name = game.players[game.winnerIndex].name
                                             playerScoreMap[name] = playerScoreMap[name]!! + 1

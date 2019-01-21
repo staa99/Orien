@@ -8,10 +8,11 @@ enum class HostOrJoin
     Host, Join
 }
 
-val defaultSPName = "player_settings"
-val defaultSPMode = Context.MODE_PRIVATE
+const val defaultSPName = "player_settings"
+const val defaultSPMode = Context.MODE_PRIVATE
 
-val playerNameSPKey = "player_name"
-val defaultPlayerName = "orien master"
-val playerTokenSPKey = "player_token"
-val defaultPlayerToken = ver
+const val playerNameSPKey = "player_name"
+const val defaultPlayerName = "New Player"
+const val playerTokenSPKey = "player_token"
+const val defaultPlayerToken = ver
+const val userSettingsReturnKey = "settings_returnUrl"

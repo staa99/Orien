@@ -15,9 +15,11 @@ open class Player
 {
     override val id = UUID.randomUUID()!!
 
+    /**
+     * This does nothing for human players. It is useful for network and AI players.
+     * In the case of a network player, it notifies the instance on their device that
+     * it is their turn, hence, be allowed to send their move.
+     */
     override fun switchTo()
-    {
-        // do nothing for human users, the block already prevents them from playing out of turn
-        // this serves as a switch for the AI to
-    }
+    {}
 }

@@ -77,5 +77,5 @@ class LocalGroupActivity : AppCompatActivity()
 
     private fun validate() =
             players.asSequence().groupBy { it.token }.all { it.value.size == 1 } &&
-                    players.asSequence().groupBy { it.name }.all { it.value.size == 1 }
+            players.asSequence().groupBy { it.name }.all { it.value.size == 1 }
 }

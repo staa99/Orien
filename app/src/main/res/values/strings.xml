@@ -79,10 +79,8 @@
     <string name="lan_multiplayer_link">Play over LAN</string>
     <string name="row_count_label_text">Number of rows</string>
     <string name="default_row_count">8</string>
-    <string name="straight_win_size_label_text">Win size for straight tokens</string>
-    <string name="default_straight_win_size">4</string>
-    <string name="slant_win_size_label_text">Win size for slant tokens</string>
-    <string name="default_slant_win_size">3</string>
+    <string name="straight_win_size_label_text">Win size</string>
+    <string name="default_straight_win_size">3</string>
     <string name="play_button_text">Play</string>
     <string name="home_button_text">Home</string>
     <string name="game_instructions_link_text">How to play</string>
@@ -90,4 +88,17 @@
     <string name="add_player">Add player</string>
     <string name="remove_last">Remove last</string>
     <string name="group_continue_btn_text">Play</string>
+    <string name="ai_play_link">Play with AI</string>
+    <string name="profile_settings_text">Settings</string>
+    <string name="game_options_text">Settings</string>
+    <string name="ai_multiplayer_header">Choose difficulty</string>
+    <string name="ai_easy_text">Easy</string>
+    <string name="ai_normal_text">Normal</string>
+    <string name="ai_hard_text">Hard</string>
+    <string name="settings_save_btn_text">Save and close</string>
+    <string-array name="num_players">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 </resources>

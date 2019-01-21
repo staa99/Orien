@@ -20,7 +20,8 @@ class TokenSpinnerAdapter(private val context: Context, private val items: Obser
                 R.layout.token_choices_spinner_item
         ), SpinnerAdapter
 {
-    override fun isEmpty() = items.isEmpty()
+    override fun isEmpty() =
+            items.isEmpty()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View
     {
@@ -41,9 +42,11 @@ class TokenSpinnerAdapter(private val context: Context, private val items: Obser
 
     }
 
-    override fun getItem(position: Int) = items[position]!!
+    override fun getItem(position: Int) =
+            items[position]!!
 
-    override fun getViewTypeCount() = 1
+    override fun getViewTypeCount() =
+            1
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View
     {
@@ -64,5 +67,6 @@ class TokenSpinnerAdapter(private val context: Context, private val items: Obser
 
     }
 
-    override fun getCount() = items.size
+    override fun getCount() =
+            items.size
 }

@@ -6,6 +6,7 @@ import android.view.View
 import com.staa.games.orien.R
 import com.staa.games.orien.engine.game.Game
 import com.staa.games.orien.engine.game.GameSettings
+import com.staa.games.orien.engine.game.players.AI
 import com.staa.games.orien.engine.game.players.Player
 import kotlinx.android.synthetic.main.game_settings_layout.*
 
@@ -33,11 +34,16 @@ class GameSettingsActivity : BaseActivity()
         try
         {
             settings = GameSettings(rowCountEditText.text.toString().trim().toInt(),
-                                    straightWinSizeEditText.text.toString().trim().toInt(),
-                                    slantWinSizeEditText.text.toString().trim().toInt(),
-                                    players.size)
+                                    winSizeEditText.text.toString().trim().toInt())
 
             val game = Game(settings, players)
+            for (p in players)
+            {
+                if (p is AI)
+                {
+                    p.game = game
+                }
+            }
 
             val i = Intent(this, GameActivity::class.java)
             i.putExtra("game", game)

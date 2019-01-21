@@ -50,15 +50,27 @@ class MainActivity : BaseActivity()
                 .setMessage("Host or Join game?")
                 .setPositiveButton("Host") { _, _ ->
                     val i = Intent(this, LanGroupActivity::class.java)
-                    i.putExtra("host", HostOrJoin.Host)
+                    i.putExtra("host", HostOrJoin.Host.name)
                     startActivity(i)
                 }
                 .setNegativeButton("Join") { _, _ ->
                     val i = Intent(this, LanGroupActivity::class.java)
-                    i.putExtra("host", HostOrJoin.Join)
+                    i.putExtra("host", HostOrJoin.Join.name)
                     startActivity(i)
                 }
                 .create()
                 .show()
+    }
+
+    fun aiPlayClick(view: View)
+    {
+        val i = Intent(this, AiGroupActivity::class.java)
+        startActivity(i)
+    }
+
+    fun onSettingsClick(view: View)
+    {
+        val i = Intent(this, UserSettingsActivity::class.java)
+        startActivity(i)
     }
 }

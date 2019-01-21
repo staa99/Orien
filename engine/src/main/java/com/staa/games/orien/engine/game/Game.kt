@@ -1,6 +1,7 @@
 package com.staa.games.orien.engine.game
 
 import com.staa.games.orien.engine.game.moves.Move
+import com.staa.games.orien.engine.game.players.AI
 import com.staa.games.orien.engine.game.players.Player
 import java.io.Serializable
 import java.util.*
@@ -10,11 +11,12 @@ class Game(val settings: GameSettings, val players: Array<Player>) : Serializabl
     val board: GameBoard = GameBoard(settings.rowCount, settings.rowCount)
     private val moves = Stack<Move>()
     var currentPlayerIndex = 0
-    var state = GameState.running
+    var state = GameState.Running
     var winnerIndex = -1
 
 
-    fun getCurrentPlayer() = players[currentPlayerIndex]
+    fun getCurrentPlayer() =
+            players[currentPlayerIndex]
 
     init
     {
@@ -25,7 +27,19 @@ class Game(val settings: GameSettings, val players: Array<Player>) : Serializabl
     }
 
 
-    fun newGame() = Game(settings, players)
+    fun newGame(): Game
+    {
+        val g = Game(settings, players)
+        for (p in players)
+        {
+            if (p is AI)
+            {
+                p.game = g
+            }
+        }
+
+        return g
+    }
 
 
     fun move(point: Point)
@@ -43,32 +57,35 @@ class Game(val settings: GameSettings, val players: Array<Player>) : Serializabl
     private fun performMove(move: Move, emulated: Boolean = false)
     {
         if (board[move.target] != nul) return
+
         val player = players[currentPlayerIndex]
         if (move.playerId == player.id)
         {
             moves.push(move)
             board[move.target] = player.token
+
             updateGameState(player)
 
-            if (!emulated)
+            if (!emulated && state == GameState.Running)
             {
                 players[currentPlayerIndex].switchTo()
             }
         }
     }
 
-    fun updateGameState(player: Player)
+    private fun updateGameState(player: Player)
     {
         when
         {
             checkWin(player.token) ->
             {
-                state = GameState.finished_win
+                state = GameState.FinishedWin
                 winnerIndex = currentPlayerIndex
             }
+
             board.isFilled()       ->
             {
-                state = GameState.finished_draw
+                state = GameState.FinishedDraw
                 winnerIndex = -1
             }
         }
@@ -76,12 +93,17 @@ class Game(val settings: GameSettings, val players: Array<Player>) : Serializabl
         switchToNextPlayer()
     }
 
-    fun checkWin(token: Int) = board.tokens[token]!!.any {
-        it.size >=
-                if (token == hor || token == ver)
-                    settings.straightWinSize
-                else
-                    settings.slantWinSize
+    private fun checkWin(token: Int) =
+            board.tokens[token]!!.any {
+                it.size >= getWinSize(token)
+            }
+
+    fun getWinSize(token: Int): Int
+    {
+        return if (token == hor || token == ver)
+            settings.winSize
+        else
+            settings.winSize
     }
 
     fun undoLastMove()
@@ -89,10 +111,10 @@ class Game(val settings: GameSettings, val players: Array<Player>) : Serializabl
         val move = moves.pop()
         board[move.target] = nul
         switchToPreviousPlayer()
-        state = GameState.running
+        state = GameState.Running
     }
 
-    fun switchToPreviousPlayer()
+    private fun switchToPreviousPlayer()
     {
         if (currentPlayerIndex == 0)
         {

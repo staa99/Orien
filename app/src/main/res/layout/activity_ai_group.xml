@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="localGroupMembers"
+            type="java.util.List"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        tools:context=".activities.AiGroupActivity">
+
+        <TextView
+            android:id="@+id/aiMultiplayerHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:text="@string/ai_multiplayer_header"
+            android:textSize="@dimen/large_text"
+            />
+
+        <RadioGroup
+            android:id="@+id/radioSettingsGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/ai_difficulty_easy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4.5dp"
+                android:background="@drawable/btn_bg"
+                android:padding="3dp"
+                android:text="@string/ai_easy_text"/>
+
+            <RadioButton
+                android:id="@+id/ai_difficulty_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4.5dp"
+                android:background="@drawable/btn_bg"
+                android:padding="3dp"
+                android:text="@string/ai_normal_text"/>
+
+            <RadioButton
+                android:id="@+id/ai_difficulty_hard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4.5dp"
+                android:background="@drawable/btn_bg"
+                android:padding="3dp"
+                android:text="@string/ai_hard_text"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginTop="100dp"
+            android:padding="5dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Enter number of players"/>
+
+        <Spinner
+            android:id="@+id/playerCountSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:entries="@array/num_players">
+        </Spinner>
+
+        <Button
+            android:id="@+id/localGroupContinueBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/btn_bg"
+            android:onClick="onPlayClick"
+            android:padding="7.5dp"
+            android:text="@string/group_continue_btn_text"
+            />
+
+    </LinearLayout>
+</layout>

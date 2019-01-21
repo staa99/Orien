@@ -1,34 +1,36 @@
 package com.staa.games.orien.engine.game.players
 
-import com.staa.games.orien.engine.ai.calculateBestMove
 import com.staa.games.orien.engine.game.Game
-import com.staa.games.orien.engine.game.Point
+import com.staa.games.orien.engine.game.extensions.bestMove_dev1
 
-class AI(name: String, token: Int, val game: Game, val difficulty: AIDifficulty) :
+class AI(name: String, token: Int, val difficulty: AIDifficulty) :
         Player(name, token)
 {
+    lateinit var game: Game
+
     override fun switchTo()
     {
         val ind = game.currentPlayerIndex
-        val outcomes = hashMapOf<Point, Point>()
-        val move = calculateBestMove(game, 0, outcomes)
+        val move = bestMove_dev1()
+
         assert(ind == game.currentPlayerIndex)
+        {
+            System.err.println("Move $move by $name caused an issue when calculating the best move")
+            System.err.println(game.board)
+        }
+
         println()
         println()
-        println("$move: $name")
-        println(outcomes.filter { it.value.first != 0 }.map {
-            "\t${Pair(it.key, it.value.first)}"
-        }.joinToString(separator = "\n",
-                       prefix = "outcomes: \n"))
-        println()
-        game.move(move)
+        game.emulateMove(move.first)
         println(game.board)
+        game.undoLastMove()
+        game.move(move.first)
     }
 }
 
 enum class AIDifficulty
 {
-    beginner,
-    player,
-    veteran
+    Beginner,
+    Regular,
+    Professional
 }

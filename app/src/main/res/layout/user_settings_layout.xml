@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,74 +8,97 @@
     android:background="@drawable/bg"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:orientation="vertical"
     tools:context=".activities.UserSettingsActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9">
 
-    <TextView
-        android:id="@+id/userNameLabel"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/userNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:labelFor="@id/userNameEditText"
+                android:text="@string/uname_ET_hint"/>
+
+            <EditText
+                android:id="@+id/userNameEditText"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:inputType="textPersonName"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textIsSelectable="false"/>
+
+
+            <TextView
+                android:id="@+id/chooseTokenLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:text="Token"
+                />
+
+
+            <Spinner
+                android:id="@+id/tokenChoiceSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"/>
+
+
+            <TextView
+                android:id="@+id/statsRecyclerViewLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/stats"/>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/statsRecyclerView"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="3dp"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:padding="20dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/btn_bg"
         android:gravity="center"
-        android:labelFor="@id/userNameEditText"
-        android:text="@string/uname_ET_hint"/>
-
-    <EditText
-        android:id="@+id/userNameEditText"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/userNameLabel"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:inputType="textPersonName"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textIsSelectable="false"/>
-
-
-    <TextView
-        android:id="@+id/chooseTokenLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/userNameEditText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:text="Token"
+        android:onClick="save"
+        android:padding="7.5dp"
+        android:text="@string/settings_save_btn_text"
         />
 
-
-    <Spinner
-        android:id="@+id/tokenChoiceSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/chooseTokenLabel"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:gravity="center"/>
-
-
-    <TextView
-        android:id="@+id/statsRecyclerViewLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tokenChoiceSpinner"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="@string/stats"/>
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/statsRecyclerView"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/statsRecyclerViewLabel"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="3dp"
-        android:foregroundGravity="center"
-        android:padding="20dp"/>
-
-</RelativeLayout>
+</LinearLayout>
