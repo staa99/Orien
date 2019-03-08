@@ -41,7 +41,7 @@ class LocalGroupActivity : AppCompatActivity()
     {
         if (players.size < 4)
         {
-            players.add(Player("Player ${players.size}", 0))
+            players.add(Player("Player ${players.size + 1}", 0))
         }
         else
         {

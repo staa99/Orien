@@ -20,6 +20,8 @@ open class Player
      * In the case of a network player, it notifies the instance on their device that
      * it is their turn, hence, be allowed to send their move.
      */
-    override fun switchTo()
-    {}
+    override suspend fun notifyTurn()
+    {
+
+    }
 }

@@ -5,9 +5,8 @@ import com.staa.games.orien.engine.game.players.Player
 
 class NetworkUser(name: String, token: Int) : Player(name, token)
 {
-    override fun switchTo()
+    override suspend fun notifyTurn()
     {
-        super.switchTo()
-
+        return super.notifyTurn()
     }
 }

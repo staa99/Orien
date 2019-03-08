@@ -3,6 +3,7 @@ package com.staa.games.orien.engine.game
 import com.staa.games.orien.engine.game.players.AI
 import com.staa.games.orien.engine.game.players.AIDifficulty
 import com.staa.games.orien.engine.game.players.Player
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
 
@@ -24,7 +25,7 @@ class BoardTests
         var proWinCount = 0
         var beginnerWinCount = 0
 
-        for (i in 1..1)
+        for (i in 1..3)
         {
             println("Game $i started")
 
@@ -32,11 +33,19 @@ class BoardTests
             john.game = game
             pete.game = game
 
+            PlayNotifier.display = object : IGameDisplay
+            {
+                override fun refresh()
+                {
+                    println(game.board)
+                }
+            }
+
             while (game.state == GameState.Running)
             {
-                // start the game
-                game.getCurrentPlayer().switchTo()
+                notifyPlayers(game)
             }
+
 
             println(game.board)
             when (game.state)
@@ -71,6 +80,17 @@ class BoardTests
                           beginnerWinCount < proWinCount)
     }
 
+
+    private fun notifyPlayers(game: Game)
+    {
+        game.notifyCurrentPlayerAsync()
+
+        runBlocking {
+            PlayNotifier.job?.await()
+        }
+    }
+
+
     @Test
     fun playCli()
     {
@@ -83,8 +103,17 @@ class BoardTests
                 pete,
                 Player("staa", ver))
 
+
         val game = Game(settings, players)
         pete.game = game
+
+        PlayNotifier.display = object : IGameDisplay
+        {
+            override fun refresh()
+            {
+                println(game.board)
+            }
+        }
 
         println(game.board)
         while (game.state != GameState.FinishedWin && game.state != GameState.FinishedDraw)
@@ -94,7 +123,8 @@ class BoardTests
             val currentPlayer = game.getCurrentPlayer()
             println("${currentPlayer.name}'s turn: ")
 
-            currentPlayer.switchTo()
+            notifyPlayers(game)
+
 
             if (currentPlayer !is AI)
             {
@@ -108,7 +138,9 @@ class BoardTests
                 {
                     throw UnsupportedOperationException("Human player skipping")
                 }
+
                 game.move(move)
+                game.notifyCurrentPlayerAsync()
             }
 
             println(game.board)

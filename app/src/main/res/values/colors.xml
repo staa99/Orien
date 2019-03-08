@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#092017</color>
-    <color name="colorPrimaryDark">#091720</color>
-    <color name="colorAccent">#78909c</color>
-    <color name="editTextColor">#b0bec5</color>
-    <color name="textLink">#64b5f6</color>
-    <color name="buttonBackgroundStart">#0a291d</color>
-    <color name="buttonBackgroundEnd">#0a202d</color>
-    <color name="verColor">#26A69A</color>
-    <color name="horColor">#448AFF</color>
-    <color name="rgtColor">#E65100</color>
-    <color name="lftColor">#FF4081</color>
+    <color name="colorPrimary">#1e2643</color>
+    <color name="colorPrimaryDark">#2b1d4e</color>
+    <color name="colorAccent">#03b3f9</color>
+    <color name="editTextColor">#74c6ef</color>
+    <color name="textLink">#85a0f2</color>
+    <color name="buttonBackgroundStart">#075fda</color>
+    <color name="buttonBackgroundEnd">#1a47ae</color>
+    <color name="verColor">#00e5ff</color>
+    <color name="horColor">#64dd17</color>
+    <color name="rgtColor">#fa5a03</color>
+    <color name="lftColor">#f5002d</color>
 </resources>

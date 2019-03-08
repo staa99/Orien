@@ -78,7 +78,7 @@
     <string name="local_multiplayer_link">Play with human on this phone</string>
     <string name="lan_multiplayer_link">Play over LAN</string>
     <string name="row_count_label_text">Number of rows</string>
-    <string name="default_row_count">8</string>
+    <string name="default_row_count">6</string>
     <string name="straight_win_size_label_text">Win size</string>
     <string name="default_straight_win_size">3</string>
     <string name="play_button_text">Play</string>

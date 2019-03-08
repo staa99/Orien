@@ -2,10 +2,13 @@ package com.staa.games.orien.activities
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import com.staa.games.orien.R
+import com.staa.games.orien.util.GameSoundState
 import com.staa.games.orien.util.HostOrJoin
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity()
 {
@@ -14,7 +17,16 @@ class MainActivity : BaseActivity()
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (!GameSoundState.isPlaying)
+        {
+            GameSoundState.player = MediaPlayer.create(applicationContext, R.raw.gentle)
+            GameSoundState.player.isLooping = true
+            GameSoundState.player.start()
+            GameSoundState.isPlaying = true
+        }
     }
+
 
     override fun onBackPressed()
     {
@@ -27,6 +39,7 @@ class MainActivity : BaseActivity()
                     }
                     .setNegativeButton("Yes") { _, _ ->
                         quitting = true
+                        super.onBackPressed()
                     }
                     .create()
                     .show()
@@ -72,5 +85,21 @@ class MainActivity : BaseActivity()
     {
         val i = Intent(this, UserSettingsActivity::class.java)
         startActivity(i)
+    }
+
+    fun onSoundClick(view: View)
+    {
+        if (GameSoundState.isPlaying)
+        {
+            GameSoundState.player.pause()
+            GameSoundState.isPlaying = false
+            soundControlBtn.setImageResource(R.drawable.ic_volume_off)
+        }
+        else
+        {
+            GameSoundState.player.start()
+            GameSoundState.isPlaying = true
+            soundControlBtn.setImageResource(R.drawable.ic_volume_up)
+        }
     }
 }

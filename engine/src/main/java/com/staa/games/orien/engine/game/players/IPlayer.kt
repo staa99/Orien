@@ -9,5 +9,5 @@ interface IPlayer : Serializable
     val token: Int
     val name: String
 
-    fun switchTo()
+    suspend fun notifyTurn()
 }

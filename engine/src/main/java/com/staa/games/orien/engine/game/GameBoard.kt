@@ -20,7 +20,6 @@ class GameBoard(private val m: Int, private val n: Int) : Serializable, Cloneabl
             Pair(rgt, rgts),
             Pair(lft, lfts))
 
-
     operator fun set(point: Point, value: Int) = set(point.first, point.second, value)
 
     operator fun set(i: Int, j: Int, value: Int)

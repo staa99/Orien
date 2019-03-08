@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg"
     android:focusable="true"
     android:focusableInTouchMode="true"
@@ -20,14 +21,15 @@
             android:layout_height="@dimen/image_button"
             android:contentDescription="@string/game_options_text"
             android:onClick="onSettingsClick"
-            android:src="@drawable/design_ic_visibility_off"/>
+            app:srcCompat="@drawable/ic_settings"/>
 
         <ImageView
+            android:id="@+id/soundControlBtn"
             android:layout_width="@dimen/image_button"
             android:layout_height="@dimen/image_button"
             android:contentDescription="@string/profile_settings_text"
-            android:onClick="onSettingsClick"
-            android:src="@drawable/design_ic_visibility"/>
+            android:onClick="onSoundClick"
+            app:srcCompat="@drawable/ic_volume_up"/>
     </android.support.v7.widget.ButtonBarLayout>
 
     <TextView

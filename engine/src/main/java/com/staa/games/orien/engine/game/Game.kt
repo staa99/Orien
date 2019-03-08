@@ -3,7 +3,12 @@ package com.staa.games.orien.engine.game
 import com.staa.games.orien.engine.game.moves.Move
 import com.staa.games.orien.engine.game.players.AI
 import com.staa.games.orien.engine.game.players.Player
-import java.io.Serializable
+import com.staa.games.orien.engine.net.NetworkUser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import java.io.*
 import java.util.*
 
 class Game(val settings: GameSettings, val players: Array<Player>) : Serializable, Cloneable
@@ -29,16 +34,24 @@ class Game(val settings: GameSettings, val players: Array<Player>) : Serializabl
 
     fun newGame(): Game
     {
-        val g = Game(settings, players)
-        for (p in players)
+        if (!moves.empty())
         {
-            if (p is AI)
+            val g = Game(settings, players)
+            g.currentPlayerIndex = currentPlayerIndex
+            for (p in players)
             {
-                p.game = g
+                if (p is AI)
+                {
+                    p.game = g
+                }
             }
-        }
 
-        return g
+            return g
+        }
+        else
+        {
+            return this
+        }
     }
 
 
@@ -49,12 +62,11 @@ class Game(val settings: GameSettings, val players: Array<Player>) : Serializabl
 
     fun emulateMove(point: Point)
     {
-        performMove(Move(point, players[currentPlayerIndex].id),
-                    emulated = true)
+        performMove(Move(point, players[currentPlayerIndex].id))
     }
 
 
-    private fun performMove(move: Move, emulated: Boolean = false)
+    private fun performMove(move: Move)
     {
         if (board[move.target] != nul) return
 
@@ -65,11 +77,36 @@ class Game(val settings: GameSettings, val players: Array<Player>) : Serializabl
             board[move.target] = player.token
 
             updateGameState(player)
+        }
+    }
 
-            if (!emulated && state == GameState.Running)
-            {
-                players[currentPlayerIndex].switchTo()
+
+    private var lastCallTime = 0L
+    fun notifyCurrentPlayerAsync()
+    {
+        if (PlayNotifier.job == null || (PlayNotifier.job != null && PlayNotifier.job!!.isCompleted))
+            GlobalScope.launch(Dispatchers.Main) {
+                lastCallTime = System.currentTimeMillis()
+                PlayNotifier.job = GlobalScope.async {
+                    notifyCurrentPlayer()
+                }
+
+                PlayNotifier.job!!.await()
+
+                PlayNotifier.display.refresh()
+                val currentPlayer = players[currentPlayerIndex]
+                if (currentPlayer is AI || currentPlayer is NetworkUser)
+                {
+                    notifyCurrentPlayerAsync()
+                }
             }
+    }
+
+    suspend fun notifyCurrentPlayer()
+    {
+        if (state == GameState.Running)
+        {
+            players[currentPlayerIndex].notifyTurn()
         }
     }
 
@@ -136,5 +173,36 @@ class Game(val settings: GameSettings, val players: Array<Player>) : Serializabl
         {
             currentPlayerIndex++
         }
+    }
+
+
+    fun deepCopy(): Game
+    {
+        var obj: Game? = null
+        try
+        {
+            // Write the object out to a byte array
+            val bos = ByteArrayOutputStream()
+            val out = ObjectOutputStream(bos)
+            out.writeObject(this)
+            out.flush()
+            out.close()
+
+            // Make an input stream from the byte array and read
+            // a copy of the object back in.
+            val inputStream = ObjectInputStream(
+                    ByteArrayInputStream(bos.toByteArray()))
+            obj = inputStream.readObject() as Game
+        }
+        catch (e: IOException)
+        {
+            e.printStackTrace()
+        }
+        catch (cnfe: ClassNotFoundException)
+        {
+            cnfe.printStackTrace()
+        }
+
+        return obj!!
     }
 }

@@ -5,17 +5,21 @@ import android.app.AlertDialog
 import android.content.Context
 import android.graphics.*
 import android.os.Build
+import android.support.v4.content.ContextCompat
 import android.view.MotionEvent
 import android.widget.FrameLayout
 import com.staa.games.orien.R
 import com.staa.games.orien.engine.game.*
 import com.staa.games.orien.engine.game.Point
+import com.staa.games.orien.engine.game.players.AI
+import com.staa.games.orien.util.GameSoundState
 import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.min
 
-class GameView(context: Context) : FrameLayout(context)
+class GameView(context: Context) : FrameLayout(context), IGameDisplay
 {
+    private var canUndo = true
     private lateinit var game: Game
     private var initGame = false
     private var boardStartX = 0f
@@ -29,7 +33,16 @@ class GameView(context: Context) : FrameLayout(context)
     private var dividerSize = 2
     private var boxRadius = 0.2f * boxSize
     private val playerScoreMap = hashMapOf<String, Int>()
-
+    private var notifying = false
+    private var boardTopBarSize = 50f
+    private var resetGameBtnStartX = 50f
+    private var resetGameBtnEndX = 150f
+    private var buttonBarStartY = 10f
+    private var buttonBarEndY = 110f
+    private var undoLastMoveBtnStartX = 170f
+    private var undoLastMoveBtnEndX = 270f
+    private var musicStateBtnStartX = 290f
+    private var musicStateBtnEndX = 390f
 
     private fun resetDimensions(width: Int, height: Int)
     {
@@ -38,7 +51,16 @@ class GameView(context: Context) : FrameLayout(context)
         reservedUnderSpace = height / 6f
         boardStartX = boardSidePadding
         boardEndX = width - boardSidePadding
-        boardStartY = boardTopPadding
+        boardStartY = boardTopPadding + boardTopBarSize
+
+        resetGameBtnStartX = boardStartX
+        resetGameBtnEndX = resetGameBtnStartX + 100
+
+        undoLastMoveBtnStartX = resetGameBtnEndX + 20
+        undoLastMoveBtnEndX = undoLastMoveBtnStartX + 100
+
+        musicStateBtnEndX = boardEndX
+        musicStateBtnStartX = musicStateBtnEndX - 100
 
         val contentWidth = boardEndX - boardStartX
 
@@ -49,16 +71,19 @@ class GameView(context: Context) : FrameLayout(context)
         boardEndY = boardStartY + (boxSize + dividerSize) * game.settings.rowCount
     }
 
-    fun setGame(game: Game)
+    fun setGame(game: Game, canUndo: Boolean)
     {
         if (!initGame)
         {
             this.game = game
+            this.canUndo = canUndo
             initGame = true
             for (p in game.players)
             {
                 playerScoreMap[p.name] = 0
             }
+
+            game.notifyCurrentPlayerAsync()
         }
     }
 
@@ -67,8 +92,54 @@ class GameView(context: Context) : FrameLayout(context)
         super.draw(canvas)
         if (canvas != null && initGame)
         {
+            drawGameButtons(canvas)
             drawBoxes(canvas)
             drawPlayerScores(canvas)
+        }
+
+        if (notifying)
+        {
+            notifying = false
+            game.notifyCurrentPlayerAsync()
+        }
+    }
+
+    private fun drawGameButtons(canvas: Canvas)
+    {
+        val resetBtnIcon = ContextCompat.getDrawable(context, R.drawable.refresh)!!
+        resetBtnIcon.setBounds(resetGameBtnStartX.toInt(),
+                               buttonBarStartY.toInt(),
+                               resetGameBtnEndX.toInt(),
+                               buttonBarEndY.toInt())
+        resetBtnIcon.draw(canvas)
+
+        if (GameSoundState.isPlaying)
+        {
+            val musicPlayingBtnIcon = ContextCompat.getDrawable(context, R.drawable.ic_volume_up)!!
+            musicPlayingBtnIcon.setBounds(musicStateBtnStartX.toInt(),
+                                          buttonBarStartY.toInt(),
+                                          musicStateBtnEndX.toInt(),
+                                          buttonBarEndY.toInt())
+            musicPlayingBtnIcon.draw(canvas)
+        }
+        else
+        {
+            val musicPlayingBtnIcon = ContextCompat.getDrawable(context, R.drawable.ic_volume_off)!!
+            musicPlayingBtnIcon.setBounds(musicStateBtnStartX.toInt(),
+                                          buttonBarStartY.toInt(),
+                                          musicStateBtnEndX.toInt(),
+                                          buttonBarEndY.toInt())
+            musicPlayingBtnIcon.draw(canvas)
+        }
+
+        if (canUndo)
+        {
+            val undoBtnIcon = ContextCompat.getDrawable(context, R.drawable.ic_undo)!!
+            resetBtnIcon.setBounds(undoLastMoveBtnStartX.toInt(),
+                                   buttonBarStartY.toInt(),
+                                   undoLastMoveBtnEndX.toInt(),
+                                   buttonBarEndY.toInt())
+            undoBtnIcon.draw(canvas)
         }
     }
 
@@ -96,57 +167,93 @@ class GameView(context: Context) : FrameLayout(context)
                 val tokenRectStartY = startY + abs(startY - endY) * 0.125f
                 val tokenRectEndY = endY - abs(startY - endY) * 0.125f
 
+                var angle = 0f
+                var paint = verPaint
+                var shouldDraw = true
+
                 when (game.board[r, c])
                 {
-                    ver ->
+                    ver  ->
                     {
-                        val path = drawRoundedRect(tokenRectStartX,
-                                                   tokenRectStartY,
-                                                   tokenRectEndX,
-                                                   tokenRectEndY,
-                                                   boxRadius,
-                                                   boxRadius,
-                                                   0f)
-                        canvas.drawPath(path, verPaint)
+                        angle = 0f
+                        paint = verPaint
                     }
 
-                    hor ->
+                    hor  ->
                     {
-                        val path = drawRoundedRect(tokenRectStartX,
-                                                   tokenRectStartY,
-                                                   tokenRectEndX,
-                                                   tokenRectEndY,
-                                                   boxRadius,
-                                                   boxRadius,
-                                                   90f)
-                        canvas.drawPath(path, horPaint)
+                        angle = 90f
+                        paint = horPaint
                     }
 
-                    rgt ->
+                    rgt  ->
                     {
-                        val path = drawRoundedRect(tokenRectStartX,
-                                                   tokenRectStartY,
-                                                   tokenRectEndX,
-                                                   tokenRectEndY,
-                                                   boxRadius,
-                                                   boxRadius,
-                                                   45f)
-                        canvas.drawPath(path, rgtPaint)
+                        angle = 45f
+                        paint = rgtPaint
                     }
 
-                    lft ->
+                    lft  ->
                     {
-                        val path = drawRoundedRect(tokenRectStartX,
-                                                   tokenRectStartY,
-                                                   tokenRectEndX,
-                                                   tokenRectEndY,
-                                                   boxRadius,
-                                                   boxRadius,
-                                                   -45f)
-                        canvas.drawPath(path, lftPaint)
+                        angle = -45f
+                        paint = lftPaint
                     }
+
+                    else -> shouldDraw = false
+                }
+
+                if (shouldDraw)
+                {
+                    val path = drawRoundedRect(tokenRectStartX,
+                                               tokenRectStartY,
+                                               tokenRectEndX,
+                                               tokenRectEndY,
+                                               boxRadius,
+                                               boxRadius,
+                                               angle)
+                    canvas.drawPath(path, paint)
                 }
             }
+        }
+    }
+
+    override fun refresh()
+    {
+        invalidate()
+
+        if (game.state == GameState.Running && game.getCurrentPlayer() is AI)
+        {
+            notifying = true
+        }
+
+        if (game.state == GameState.FinishedDraw || game.state == GameState.FinishedWin)
+        {
+            notifying = false
+            fun dismiss()
+            {
+                game = game.newGame()
+                invalidate()
+            }
+
+            AlertDialog
+                    .Builder(context)
+                    .setNeutralButton("OK")
+                    { _, _ ->
+                        dismiss()
+                    }
+                    .setMessage(if (game.state == GameState.FinishedWin)
+                                {
+                                    val name = game.players[game.winnerIndex].name
+                                    playerScoreMap[name] = playerScoreMap[name]!! + 1
+                                    "$name wins"
+                                }
+                                else
+                                {
+                                    "Draw!"
+                                })
+                    .setOnDismissListener {
+                        dismiss()
+                    }
+                    .create()
+                    .show()
         }
     }
 
@@ -176,7 +283,7 @@ class GameView(context: Context) : FrameLayout(context)
                                 hor  -> horPaint
                                 rgt  -> rgtPaint
                                 else -> lftPaint
-                            })
+                            }.apply { isUnderlineText = game.getCurrentPlayer().name == name })
             index++
         }
     }
@@ -201,58 +308,74 @@ class GameView(context: Context) : FrameLayout(context)
         resetDimensions(w, h)
     }
 
+    private fun resetGame()
+    {
+        game = game.newGame()
+        invalidate()
+    }
+
+    private fun undoLastMove()
+    {
+        game.undoLastMove()
+        invalidate()
+    }
+
+    private fun toggleMusic()
+    {
+        if (GameSoundState.isPlaying)
+        {
+            GameSoundState.player.pause()
+            GameSoundState.isPlaying = false
+        }
+        else
+        {
+            GameSoundState.player.start()
+            GameSoundState.isPlaying = true
+        }
+
+        invalidate()
+    }
+
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean
     {
-        if (event != null && event.action == MotionEvent.ACTION_DOWN)
+        if ((PlayNotifier.job == null || (PlayNotifier.job != null && PlayNotifier.job!!.isCompleted)) && event != null && event.action == MotionEvent.ACTION_DOWN)
         {
             val x = event.x
             val y = event.y
 
-            val c = floor((x - boardStartX - 1) / (dividerSize + boxSize)).toInt()
-            val r = floor((y - boardStartY - 1) / (dividerSize + boxSize)).toInt()
-
-            val n = game.settings.rowCount
-            if (c >= 0 && r >= 0 && r < n && c < n)
+            if (y !in buttonBarStartY..buttonBarEndY)
             {
-                game.move(Point(r, c))
-                invalidate()
 
-                if (game.state == GameState.FinishedDraw || game.state == GameState.FinishedWin)
+                val c = floor((x - boardStartX - 1) / (dividerSize + boxSize)).toInt()
+                val r = floor((y - boardStartY - 1) / (dividerSize + boxSize)).toInt()
+
+                val n = game.settings.rowCount
+                if (c >= 0 && r >= 0 && r < n && c < n)
                 {
-                    fun dismiss()
-                    {
-                        game = game.newGame()
-                        invalidate()
-                    }
-
-                    AlertDialog
-                            .Builder(context)
-                            .setNeutralButton("OK")
-                            { _, _ ->
-                                dismiss()
-                            }
-                            .setMessage(if (game.state == GameState.FinishedWin)
-                                        {
-                                            val name = game.players[game.winnerIndex].name
-                                            playerScoreMap[name] = playerScoreMap[name]!! + 1
-                                            "$name wins"
-                                        }
-                                        else
-                                        {
-                                            "Draw!"
-                                        })
-                            .setOnDismissListener {
-                                dismiss()
-                            }
-                            .create()
-                            .show()
+                    game.move(Point(r, c))
+                    refresh()
+                }
+            }
+            else
+            {
+                if (x in resetGameBtnStartX..resetGameBtnEndX)
+                {
+                    resetGame()
+                }
+                else if (canUndo && x in undoLastMoveBtnStartX..undoLastMoveBtnEndX)
+                {
+                    undoLastMove()
+                }
+                else if (x in musicStateBtnStartX..musicStateBtnEndX)
+                {
+                    toggleMusic()
                 }
             }
         }
         return super.onTouchEvent(event)
     }
-
 
     companion object
     {
@@ -279,16 +402,16 @@ class GameView(context: Context) : FrameLayout(context)
             tokenPaint.typeface = Typeface.SANS_SERIF
 
             verPaint = Paint(tokenPaint)
-            verPaint.color = Color.parseColor("#FF26A69A")
+            verPaint.color = Color.parseColor("#00e5ff")
 
             horPaint = Paint(tokenPaint)
-            horPaint.color = Color.parseColor("#FF448AFF")
+            horPaint.color = Color.parseColor("#64dd17")
 
             rgtPaint = Paint(tokenPaint)
-            rgtPaint.color = Color.parseColor("#FFFF4081")
+            rgtPaint.color = Color.parseColor("#e65100")
 
             lftPaint = Paint(tokenPaint)
-            lftPaint.color = Color.parseColor("#FFE65100")
+            lftPaint.color = Color.parseColor("#f50057")
         }
 
         fun drawRoundedRect(left: Float,
