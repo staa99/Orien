@@ -75,7 +75,7 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="uname_ET_hint">user name</string>
     <string name="stats">stats</string>
-    <string name="local_multiplayer_link">Play with human on this phone</string>
+    <string name="local_multiplayer_link">Play local game</string>
     <string name="lan_multiplayer_link">Play over LAN</string>
     <string name="row_count_label_text">Number of rows</string>
     <string name="default_row_count">6</string>
@@ -96,6 +96,10 @@
     <string name="ai_normal_text">Normal</string>
     <string name="ai_hard_text">Hard</string>
     <string name="settings_save_btn_text">Save and close</string>
+    <string name="lan_multiplayer_host">Host game</string>
+    <string name="lan_multiplayer_join">Join game</string>
+    <string name="player_count_label_text">Number of players</string>
+    <string name="join_game_prompt">Choose a game to join</string>
     <string-array name="num_players">
         <item>2</item>
         <item>3</item>

@@ -2,7 +2,6 @@ package com.staa.games.orien.activities
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import com.staa.games.orien.R
@@ -12,43 +11,24 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity()
 {
-    private var quitting = false
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        if (!GameSoundState.isPlaying)
-        {
-            GameSoundState.player = MediaPlayer.create(applicationContext, R.raw.gentle)
-            GameSoundState.player.isLooping = true
-            GameSoundState.player.start()
-            GameSoundState.isPlaying = true
-        }
     }
 
 
-    override fun onBackPressed()
-    {
-        if (!quitting)
-        {
+    override fun onBackPressed() =
             AlertDialog.Builder(this)
                     .setMessage("Do you want to close this game")
                     .setPositiveButton("No") { _, _ ->
-                        quitting = false
+
                     }
                     .setNegativeButton("Yes") { _, _ ->
-                        quitting = true
                         super.onBackPressed()
                     }
                     .create()
                     .show()
-        }
-        else
-        {
-            super.onBackPressed()
-        }
-    }
 
 
     fun localMultiplayerClick(view: View)

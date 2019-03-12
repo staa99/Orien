@@ -13,7 +13,7 @@ import java.util.*
 
 class Game(val settings: GameSettings, val players: Array<Player>) : Serializable, Cloneable
 {
-    val board: GameBoard = GameBoard(settings.rowCount, settings.rowCount)
+    val board: GameBoard = GameBoard(settings.rowCount)
     private val moves = Stack<Move>()
     var currentPlayerIndex = 0
     var state = GameState.Running
@@ -27,7 +27,7 @@ class Game(val settings: GameSettings, val players: Array<Player>) : Serializabl
     {
         if (players.size < 2 || players.size > 4)
         {
-            throw UnsupportedOperationException("Maximum number of players exceeded")
+            throw UnsupportedOperationException("Invalid number of users")
         }
     }
 
@@ -132,23 +132,18 @@ class Game(val settings: GameSettings, val players: Array<Player>) : Serializabl
 
     private fun checkWin(token: Int) =
             board.tokens[token]!!.any {
-                it.size >= getWinSize(token)
+                it.size >= settings.winSize
             }
-
-    fun getWinSize(token: Int): Int
-    {
-        return if (token == hor || token == ver)
-            settings.winSize
-        else
-            settings.winSize
-    }
 
     fun undoLastMove()
     {
-        val move = moves.pop()
-        board[move.target] = nul
-        switchToPreviousPlayer()
-        state = GameState.Running
+        if (!moves.isEmpty())
+        {
+            val move = moves.pop()
+            board[move.target] = nul
+            switchToPreviousPlayer()
+            state = GameState.Running
+        }
     }
 
     private fun switchToPreviousPlayer()

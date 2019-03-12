@@ -9,5 +9,78 @@
     android:focusableInTouchMode="true"
     tools:context=".activities.LanGroupActivity">
 
+    <TextView
+        android:id="@+id/hostOrJoinTitleName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="@string/lan_multiplayer_host"
+        android:textSize="@dimen/large_text"/>
 
+
+    <LinearLayout
+        android:id="@+id/hostGroupLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/hostOrJoinTitleName"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/playerCountLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:labelFor="@id/playerCountEditText"
+            android:text="@string/player_count_label_text"/>
+
+        <EditText
+            android:id="@+id/playerCountEditText"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:textIsSelectable="false"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/joinGroupLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/hostOrJoinTitleName"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/groupListLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:text="@string/join_game_prompt"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/groupListRecyclerView"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="3dp"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:padding="20dp"/>
+    </LinearLayout>
 </RelativeLayout>

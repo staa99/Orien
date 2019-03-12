@@ -3,10 +3,10 @@ package com.staa.games.orien.engine.game
 import java.io.Serializable
 import kotlin.math.abs
 
-class GameBoard(private val m: Int, private val n: Int) : Serializable, Cloneable
+class GameBoard(private val n: Int) : Serializable, Cloneable
 {
-    private val grid = Array(m) { _ ->
-        Array(n) { _ -> nul }
+    private val grid = Array(n) {
+        Array(n) { nul }
     }
 
     private val hors = arrayListOf<ArrayList<Point>>()
@@ -35,7 +35,7 @@ class GameBoard(private val m: Int, private val n: Int) : Serializable, Cloneabl
             throw UnsupportedOperationException("Unsupported state")
         }
 
-        if (i !in 0 until m || j !in 0 until n)
+        if (i !in 0 until n || j !in 0 until n)
         {
             throw UnsupportedOperationException("Grid point not available: ($i,$j)")
         }
@@ -83,7 +83,7 @@ class GameBoard(private val m: Int, private val n: Int) : Serializable, Cloneabl
     {
         val list = arrayListOf<Point>()
 
-        for (r in 0 until m)
+        for (r in 0 until n)
         {
             for (j in 0 until n)
             {
@@ -97,7 +97,7 @@ class GameBoard(private val m: Int, private val n: Int) : Serializable, Cloneabl
 
     private fun reSync()
     {
-        val clone = Array(m) { i ->
+        val clone = Array(n) { i ->
             Array(n) { j ->
                 val p = grid[i][j]
                 grid[i][j] = nul
@@ -106,7 +106,7 @@ class GameBoard(private val m: Int, private val n: Int) : Serializable, Cloneabl
         }
         tokens.values.forEach { it.clear() }
 
-        for (i in 0 until m)
+        for (i in 0 until n)
         {
             for (j in 0 until n)
             {

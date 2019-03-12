@@ -41,10 +41,14 @@ class UserSettingsActivity : BaseActivity()
         tokenChoices.add(ver)
         tokenChoices.add(rgt)
         tokenChoices.add(lft)
+
+        userNameEditText.text.append(name)
         tokenChoiceSpinner.adapter = TokenSpinnerAdapter(this, tokenChoices)
 
         tokenChoiceSpinner.onItemSelectedListener = TokenChoiceSpinnerItemSelected(
                 tokenChoiceSpinner, 0, player, tokenChoices)
+
+        tokenChoiceSpinner.setSelection(tokenChoices.indexOf(token))
     }
 
     fun save(view: View)
