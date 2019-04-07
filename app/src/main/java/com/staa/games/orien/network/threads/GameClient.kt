@@ -1,13 +1,24 @@
 package com.staa.games.orien.network.threads
 
-import android.content.Context
-import android.net.wifi.WifiManager
+import android.net.nsd.NsdManager
+import com.staa.games.orien.network.IGroupView
+import com.staa.games.orien.network.Resolver
+import com.staa.games.orien.network.Scanner
 
-class GameClient(private val context: Context)
+class GameClient(nsdManager: NsdManager, groupView: IGroupView)
 {
-    fun discoverPeers()
-    {
-        val mgr = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+    private val scanner: Scanner
+    private val clientThread: ClientThread
 
+    init
+    {
+        val resolver = Resolver(groupView)
+        scanner = Scanner(resolver, nsdManager)
+        clientThread = ClientThread()
+    }
+
+    fun discoverServers()
+    {
+        scanner.act()
     }
 }

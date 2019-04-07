@@ -135,10 +135,10 @@ class GameView(context: Context) : FrameLayout(context), IGameDisplay
         if (canUndo)
         {
             val undoBtnIcon = ContextCompat.getDrawable(context, R.drawable.ic_undo)!!
-            resetBtnIcon.setBounds(undoLastMoveBtnStartX.toInt(),
-                                   buttonBarStartY.toInt(),
-                                   undoLastMoveBtnEndX.toInt(),
-                                   buttonBarEndY.toInt())
+            undoBtnIcon.setBounds(undoLastMoveBtnStartX.toInt(),
+                                  buttonBarStartY.toInt(),
+                                  undoLastMoveBtnEndX.toInt(),
+                                  buttonBarEndY.toInt())
             undoBtnIcon.draw(canvas)
         }
     }

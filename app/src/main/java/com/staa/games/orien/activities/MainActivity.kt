@@ -39,6 +39,8 @@ class MainActivity : BaseActivity()
 
     fun lanMultiplayerClick(view: View)
     {
+        displayYetToImplement()
+        return
         AlertDialog.Builder(this)
                 .setMessage("Host or Join game?")
                 .setPositiveButton("Host") { _, _ ->
@@ -55,9 +57,25 @@ class MainActivity : BaseActivity()
                 .show()
     }
 
+    private fun displayYetToImplement()
+    {
+        AlertDialog.Builder(this)
+                .setMessage("Feature scheduled for future release")
+                .create()
+                .show()
+    }
+
     fun aiPlayClick(view: View)
     {
+        displayYetToImplement()
+        return
         val i = Intent(this, AiGroupActivity::class.java)
+        startActivity(i)
+    }
+
+    fun onCreditsClick(view: View)
+    {
+        val i = Intent(this, CreditsActivity::class.java)
         startActivity(i)
     }
 

@@ -25,9 +25,14 @@ abstract class BaseActivity : AppCompatActivity()
         sharedPreferences = getSharedPreferences(defaultSPName, defaultSPMode)
 
         GameSoundState.isPlaying = sharedPreferences.getBoolean("music_playing", true)
-        if (!GameSoundState.isPlaying)
+        if (!GameSoundState.initialized)
         {
             GameSoundState.player = MediaPlayer.create(applicationContext, R.raw.gentle)
+            GameSoundState.initialized = true
+        }
+
+        if (GameSoundState.isPlaying)
+        {
             GameSoundState.player.isLooping = true
             GameSoundState.player.start()
             GameSoundState.isPlaying = true
@@ -43,7 +48,10 @@ abstract class BaseActivity : AppCompatActivity()
         {
             GameSoundState.player.pause()
             GameSoundState.isPlaying = false
-            soundControlBtn.setImageResource(R.drawable.ic_volume_off)
+            if (soundControlBtn != null)
+            {
+                soundControlBtn.setImageResource(R.drawable.ic_volume_off)
+            }
         }
     }
 
@@ -57,7 +65,11 @@ abstract class BaseActivity : AppCompatActivity()
         {
             GameSoundState.player.start()
             GameSoundState.isPlaying = true
-            soundControlBtn.setImageResource(R.drawable.ic_volume_up)
+
+            if (soundControlBtn != null)
+            {
+                soundControlBtn.setImageResource(R.drawable.ic_volume_up)
+            }
         }
     }
 }

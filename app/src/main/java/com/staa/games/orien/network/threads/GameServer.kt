@@ -9,7 +9,7 @@ class GameServer(count: Int, nsdManager: NsdManager)
 {
     private val registrar: INsdServiceActor
     private var threads: Array<ServerThread>
-    private val serverSocket = ServerSocket()
+    private val serverSocket = ServerSocket().apply { bind(null) }
     private var lock = Any()
 
     init
@@ -35,4 +35,13 @@ class GameServer(count: Int, nsdManager: NsdManager)
             {
                 serverSocket.accept()
             }!!
+
+    fun release()
+    {
+        for (t in threads)
+        {
+            t.running = false
+            serverSocket.close()
+        }
+    }
 }

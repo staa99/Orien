@@ -4,7 +4,7 @@ import android.net.nsd.NsdManager
 import android.net.nsd.NsdServiceInfo
 import android.util.Log
 
-class Resolver : NsdManager.ResolveListener
+class Resolver(private val groupView: IGroupView) : NsdManager.ResolveListener
 {
     var serviceInfo: NsdServiceInfo? = null
     private val resolverTag = "ORIEN_RESOLVER"
@@ -18,12 +18,13 @@ class Resolver : NsdManager.ResolveListener
     {
         Log.e(resolverTag, "Resolve Succeeded. $serviceInfo")
 
-        if (serviceInfo.serviceName == ActiveNetworkConfig.serviceName)
+        /*if (serviceInfo.serviceName == ActiveNetworkConfig.serviceName)
         {
             Log.d(resolverTag, "Same IP.")
             return
-        }
+        }*/
 
         this.serviceInfo = serviceInfo
+        groupView.addServer(serviceInfo)
     }
 }

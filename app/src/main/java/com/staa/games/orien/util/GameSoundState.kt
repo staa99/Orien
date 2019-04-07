@@ -6,4 +6,5 @@ object GameSoundState
 {
     var isPlaying: Boolean = false
     lateinit var player: MediaPlayer
+    var initialized: Boolean = false
 }

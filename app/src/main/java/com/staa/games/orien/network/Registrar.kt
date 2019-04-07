@@ -7,7 +7,7 @@ class Registrar(private val nsdManager: NsdManager, private val mPort: Int) :
         NsdManager.RegistrationListener,
         INsdServiceActor
 {
-    var isRegistered = false
+    private var isRegistered = false
     var mServiceName = ActiveNetworkConfig.serviceName
 
     override fun onServiceRegistered(NsdServiceInfo: NsdServiceInfo)

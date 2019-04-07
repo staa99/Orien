@@ -2,7 +2,6 @@ package com.staa.games.orien.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.staa.games.orien.R
 import com.staa.games.orien.engine.game.hor
@@ -15,7 +14,7 @@ import com.staa.games.orien.engine.game.ver
 import com.staa.games.orien.util.*
 import kotlinx.android.synthetic.main.activity_ai_group.*
 
-class AiGroupActivity : AppCompatActivity()
+class AiGroupActivity : BaseActivity()
 {
     private val players = ArrayList<Player>()
     override fun onCreate(savedInstanceState: Bundle?)

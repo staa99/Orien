@@ -23,7 +23,8 @@ import com.staa.games.orien.viewholders.AppViewHolder
 abstract class AppRecyclerViewAdapter<ItemType : Any, BindingType : ViewDataBinding>
 (private val items: ObservableList<ItemType>,
  @IdRes
- private val variableId: Int, private val layoutId: Int)
+ private val variableId: Int,
+ private val layoutId: Int)
     : Adapter<AppViewHolder<BindingType>>()
 {
     companion object

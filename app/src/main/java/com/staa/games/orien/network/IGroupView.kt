@@ -1,11 +1,9 @@
 package com.staa.games.orien.network
 
-import com.staa.games.orien.engine.game.players.Player
+import android.net.nsd.NsdServiceInfo
 
 interface IGroupView
 {
-    fun addUser(player: Player)
-    {
-
-    }
+    fun addServer(serviceInfo: NsdServiceInfo)
+    fun connect(serviceInfo: NsdServiceInfo)
 }

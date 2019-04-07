@@ -3,7 +3,6 @@ package com.staa.games.orien.activities
 import android.content.Intent
 import android.databinding.ObservableArrayList
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.Toast
@@ -14,7 +13,7 @@ import com.staa.games.orien.engine.game.players.Player
 import com.staa.games.orien.engine.game.ver
 import kotlinx.android.synthetic.main.activity_local_group.*
 
-class LocalGroupActivity : AppCompatActivity()
+class LocalGroupActivity : BaseActivity()
 {
     private val players = ObservableArrayList<Player>()
     override fun onCreate(savedInstanceState: Bundle?)
