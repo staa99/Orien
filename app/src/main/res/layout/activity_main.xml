@@ -83,11 +83,11 @@
         android:id="@+id/credits"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/wifiMultiplayer"
+        android:layout_below="@id/aiPlay"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:onClick="aiPlayClick"
-        android:text="@string/ai_play_link"
+        android:onClick="onCreditsClick"
+        android:text="Credits"
         android:textColor="@color/textLink"
         />
 </RelativeLayout>

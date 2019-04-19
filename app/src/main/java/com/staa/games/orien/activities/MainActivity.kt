@@ -67,8 +67,6 @@ class MainActivity : BaseActivity()
 
     fun aiPlayClick(view: View)
     {
-        displayYetToImplement()
-        return
         val i = Intent(this, AiGroupActivity::class.java)
         startActivity(i)
     }

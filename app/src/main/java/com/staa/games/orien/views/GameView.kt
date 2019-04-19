@@ -230,6 +230,7 @@ class GameView(context: Context) : FrameLayout(context), IGameDisplay
             fun dismiss()
             {
                 game = game.newGame()
+                refresh()
                 invalidate()
             }
 

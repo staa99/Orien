@@ -6,9 +6,7 @@ import android.view.View
 import com.staa.games.orien.R
 import com.staa.games.orien.engine.game.hor
 import com.staa.games.orien.engine.game.lft
-import com.staa.games.orien.engine.game.players.AI
-import com.staa.games.orien.engine.game.players.AIDifficulty
-import com.staa.games.orien.engine.game.players.Player
+import com.staa.games.orien.engine.game.players.*
 import com.staa.games.orien.engine.game.rgt
 import com.staa.games.orien.engine.game.ver
 import com.staa.games.orien.util.*
@@ -53,7 +51,12 @@ class AiGroupActivity : BaseActivity()
 
         for (i in 1..count)
         {
-            players += AI("Bot $i", nextAvailableToken(), difficulty)
+            players += when (difficulty)
+            {
+                AIDifficulty.Beginner     -> BeginnerAI("Bot $i", nextAvailableToken())
+                AIDifficulty.Regular      -> RegularAI("Bot $i", nextAvailableToken())
+                AIDifficulty.Professional -> ProfessionalAI("Bot $i", nextAvailableToken())
+            }
         }
     }
 

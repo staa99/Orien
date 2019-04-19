@@ -1,17 +1,20 @@
 package com.staa.games.orien.engine.game
 
+import com.staa.games.orien.engine.game.coroutines.CoroutineContextProvider
 import com.staa.games.orien.engine.game.moves.Move
 import com.staa.games.orien.engine.game.players.AI
 import com.staa.games.orien.engine.game.players.Player
-import com.staa.games.orien.engine.net.NetworkUser
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.*
 import java.util.*
 
-class Game(val settings: GameSettings, val players: Array<Player>) : Serializable, Cloneable
+class Game(val settings: GameSettings,
+           val players: Array<Player>,
+           private val contextPool: CoroutineContextProvider = CoroutineContextProvider()) :
+        Serializable,
+        Cloneable
 {
     val board: GameBoard = GameBoard(settings.rowCount)
     private val moves = Stack<Move>()
@@ -60,11 +63,6 @@ class Game(val settings: GameSettings, val players: Array<Player>) : Serializabl
         performMove(Move(point, players[currentPlayerIndex].id))
     }
 
-    fun emulateMove(point: Point)
-    {
-        performMove(Move(point, players[currentPlayerIndex].id))
-    }
-
 
     private fun performMove(move: Move)
     {
@@ -85,20 +83,21 @@ class Game(val settings: GameSettings, val players: Array<Player>) : Serializabl
     fun notifyCurrentPlayerAsync()
     {
         if (PlayNotifier.job == null || (PlayNotifier.job != null && PlayNotifier.job!!.isCompleted))
-            GlobalScope.launch(Dispatchers.Main) {
+            GlobalScope.launch(contextPool.Main) {
                 lastCallTime = System.currentTimeMillis()
-                PlayNotifier.job = GlobalScope.async {
+                PlayNotifier.job = GlobalScope.async(contextPool.IO) {
                     notifyCurrentPlayer()
                 }
 
                 PlayNotifier.job!!.await()
 
+
                 PlayNotifier.display.refresh()
-                val currentPlayer = players[currentPlayerIndex]
-                if (currentPlayer is AI || currentPlayer is NetworkUser)
+                /*val currentPlayer = players[currentPlayerIndex]
+                if (state == GameState.Running && (currentPlayer is AI || currentPlayer is NetworkUser))
                 {
                     notifyCurrentPlayerAsync()
-                }
+                }*/
             }
     }
 

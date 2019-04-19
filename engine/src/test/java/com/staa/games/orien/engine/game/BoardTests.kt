@@ -1,8 +1,10 @@
 package com.staa.games.orien.engine.game
 
+import com.staa.games.orien.engine.game.coroutines.TestContextProvider
 import com.staa.games.orien.engine.game.players.AI
-import com.staa.games.orien.engine.game.players.AIDifficulty
+import com.staa.games.orien.engine.game.players.BeginnerAI
 import com.staa.games.orien.engine.game.players.Player
+import com.staa.games.orien.engine.game.players.ProfessionalAI
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
@@ -16,8 +18,8 @@ class BoardTests
                 rowCount = 5,
                 winSize = 3)
 
-        val john = AI("john", ver, AIDifficulty.Beginner)
-        val pete = AI("pete", hor, AIDifficulty.Professional)
+        val john = BeginnerAI("john", ver)
+        val pete = ProfessionalAI("pete", hor)
         val players = arrayOf(john as Player, pete)
 
         // simulate 100 games, assert that the number of wins of the pro is greater than that of a beginner
@@ -29,7 +31,7 @@ class BoardTests
         {
             println("Game $i started")
 
-            val game = Game(settings, players)
+            val game = Game(settings, players, TestContextProvider())
             john.game = game
             pete.game = game
 
@@ -98,13 +100,13 @@ class BoardTests
                 rowCount = 5,
                 winSize = 3)
 
-        val pete = AI("pete", hor, AIDifficulty.Professional)
+        val pete = ProfessionalAI("pete", hor)
         val players = arrayOf(
                 pete,
                 Player("staa", ver))
 
 
-        val game = Game(settings, players)
+        val game = Game(settings, players, TestContextProvider())
         pete.game = game
 
         PlayNotifier.display = object : IGameDisplay

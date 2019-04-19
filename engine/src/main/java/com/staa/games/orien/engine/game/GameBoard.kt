@@ -124,8 +124,8 @@ class GameBoard(private val n: Int) : Serializable, Cloneable
 
     private inline fun treatStraight(line: ArrayList<ArrayList<Point>>,
                                      point: Point,
-                                     crossinline selectSame: (Point) -> Int,
-                                     crossinline selectOther: (Point) -> Int)
+                                     selectSame: (Point) -> Int,
+                                     selectOther: (Point) -> Int)
     {
         return treatLine(line, point) {
             selectSame(it) == selectSame(point) &&
